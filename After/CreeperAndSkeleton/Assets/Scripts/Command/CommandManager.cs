@@ -16,7 +16,7 @@ public class CommandManager : MonoBehaviour
         Instance = this;
     }
 
-    public void AddCommand(ICommand com, float time)
+    public static void AddCommand(ICommand com, float time)
     {
         com.Execute();
     }
