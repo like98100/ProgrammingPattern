@@ -27,6 +27,8 @@ namespace StatePattern
         Dictionary<KeyCode, CommandManager.ICommand> keys;
         float time;
 
+        SendMessage sendMessage;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -47,6 +49,8 @@ namespace StatePattern
 
             time = 0f;
 
+            sendMessage = this.gameObject.GetComponent<SendMessage>();
+
             setDistance();
         }
 
@@ -63,14 +67,23 @@ namespace StatePattern
                 //배회 상태일 때
                 case Enemy.EnemyFSM.Stroll:
                     // 거리가 10f 이하면 추적 상태로 변환
-                    if (distance[0] < 10.0f) creeper.SetCurState(Enemy.EnemyFSM.MoveTowardsPlayer);
+                    if (distance[0] < 10.0f)
+                    {
+                        creeper.SetCurState(Enemy.EnemyFSM.MoveTowardsPlayer);
+                        sendMessage.EventInvoke(0);
+                    }
+                        
                     break;
                 //추적 상태일 때
                 case Enemy.EnemyFSM.MoveTowardsPlayer:
                     // 거리가 1f 이하면 공격 상태로 변환
                     if(distance[0] < 1.0f) creeper.SetCurState(Enemy.EnemyFSM.Attack);
-                    //거리가 15f 이상이면 추적 상태로 변환
-                    else if(distance[0] > 15.0f) creeper.SetCurState(Enemy.EnemyFSM.Stroll);
+                    //거리가 15f 이상이면 배회 상태로 변환
+                    else if(distance[0] > 15.0f)
+                    {
+                        creeper.SetCurState(Enemy.EnemyFSM.Stroll);
+                        sendMessage.EventInvoke(1);
+                    }
                     break;
                 // 공격 상태일 때
                 case Enemy.EnemyFSM.Attack:
@@ -84,14 +97,22 @@ namespace StatePattern
                 //배회 상태일 때
                 case Enemy.EnemyFSM.Stroll:
                     // 거리가 10f 이하면 추적 상태로 변환
-                    if (distance[1] < 10.0f) skeleton.SetCurState(Enemy.EnemyFSM.MoveTowardsPlayer);
+                    if (distance[1] < 10.0f)
+                    {
+                        skeleton.SetCurState(Enemy.EnemyFSM.MoveTowardsPlayer);
+                        sendMessage.EventInvoke(0);
+                    }
                     break;
                 //추적 상태일 때
                 case Enemy.EnemyFSM.MoveTowardsPlayer:
                     // 거리가 5f 이하면 공격 상태로 변환
                     if (distance[1] < 5.0f) skeleton.SetCurState(Enemy.EnemyFSM.Attack);
-                    //거리가 15f 이상이면 추적 상태로 변환
-                    else if (distance[1] > 15.0f) skeleton.SetCurState(Enemy.EnemyFSM.Stroll);
+                    //거리가 15f 이상이면 배회 상태로 변환
+                    else if (distance[1] > 15.0f)
+                    {
+                        skeleton.SetCurState(Enemy.EnemyFSM.Stroll);
+                        sendMessage.EventInvoke(1);
+                    }
                     break;
                 // 공격 상태일 때
                 case Enemy.EnemyFSM.Attack:
