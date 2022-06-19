@@ -25,7 +25,7 @@ namespace StatePattern
         PlayerState nextStep;
 
         Dictionary<KeyCode, CommandManager.ICommand> keys;
-        float time;
+        //float time;
 
         SendMessage sendMessage;
 
@@ -44,10 +44,10 @@ namespace StatePattern
                 {KeyCode.UpArrow, new UpCommand()},
                 {KeyCode.DownArrow, new DownCommand()},
                 {KeyCode.LeftArrow, new LeftCommand()},
-                {KeyCode.RightArrow, new RightCommand()}
+                {KeyCode.RightArrow, new RightCommand()},
             };
 
-            time = 0f;
+            //time = 0f;
 
             sendMessage = this.gameObject.GetComponent<SendMessage>();
 
@@ -155,7 +155,7 @@ namespace StatePattern
                     foreach(var key in keys)
                     {
                         if (Input.GetKey(key.Key))  // 공격을 포함한 상호작용이 추가될 경우, 분류할 것
-                            CommandManager.AddCommand(key.Value, time);
+                            CommandManager.AddCommand(key.Value);
                     }
                     break;
             }
@@ -168,7 +168,7 @@ namespace StatePattern
             setDistance();
             setMonsterState();
 
-            time += Time.deltaTime;
+            //time += Time.deltaTime;
         }
 
         // 이동
